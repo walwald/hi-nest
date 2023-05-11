@@ -25,13 +25,13 @@ describe('MoviesService', () => {
   });
 
   describe('getOne', () => {
-    it('should return a movie', () => {
+    it('should return a movie', async () => {
       service.create({
         title: 'Test Movie',
         genres: ['test'],
         year: 2000,
       });
-      const movie = service.getOne(1);
+      const movie = await service.getOne(1);
       expect(movie).toBeDefined();
       expect(movie.id).toEqual(1);
     });
@@ -46,16 +46,16 @@ describe('MoviesService', () => {
   });
 
   describe('deleteOne', () => {
-    it('deletes a movie', () => {
+    it('deletes a movie', async () => {
       service.create({
         title: 'Test Movie',
         genres: ['test'],
         year: 2000,
       });
-      const deforeDelete = service.getAll().length;
+      const beforeDelete = await service.getAll();
       service.deleteOne(1);
-      const afterDelete = service.getAll().length;
-      expect(afterDelete).toBeLessThan(deforeDelete);
+      const afterDelete = await service.getAll();
+      expect(afterDelete.length).toBeLessThan(beforeDelete.length);
     });
     it('should return a 404', () => {
       try {
@@ -68,27 +68,27 @@ describe('MoviesService', () => {
   });
 
   describe('create', () => {
-    it('should create a movie', () => {
-      const beforeCreate = service.getAll().length;
+    it('should create a movie', async () => {
+      const beforeCreate = await service.getAll();
       service.create({
         title: 'Test Movie',
         genres: ['test'],
         year: 2000,
       });
-      const afterCreate = service.getAll().length;
-      expect(afterCreate).toBeGreaterThan(beforeCreate);
+      const afterCreate = await service.getAll();
+      expect(afterCreate.length).toBeGreaterThan(beforeCreate.length);
     });
   });
 
   describe('update', () => {
-    it('should update a movie', () => {
+    it('should update a movie', async () => {
       service.create({
         title: 'Test Movie',
         genres: ['test'],
         year: 2000,
       });
-      service.update(1, { title: 'updated Test' });
-      const movie = service.getOne(1);
+      await service.update(1, { title: 'updated Test' });
+      const movie = await service.getOne(1);
       expect(movie.title).toEqual('updated Test');
     });
     it('should throw a NotFoundException', () => {

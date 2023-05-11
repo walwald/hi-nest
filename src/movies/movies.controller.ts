@@ -18,7 +18,7 @@ export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
 
   @Get()
-  getAll(): Movie[] {
+  getAll(): Promise<Movie[]> {
     return this.moviesService.getAll();
   }
 
@@ -27,9 +27,8 @@ export class MoviesController {
     return `We are searching for a movie made after: ${searchingYear}`;
   }
 
-  @Get('/:id')
-  getOne(@Param('id') movieId: number): Movie {
-    console.log(typeof movieId);
+  @Get(':id')
+  getOne(@Param('id') movieId: number) {
     return this.moviesService.getOne(movieId);
   }
 
@@ -38,12 +37,12 @@ export class MoviesController {
     return this.moviesService.create(movieData);
   }
 
-  @Delete('/:id')
+  @Delete(':id')
   remove(@Param('id') movieId: number) {
     return this.moviesService.deleteOne(movieId);
   }
 
-  @Patch('/:id')
+  @Patch(':id')
   patch(@Param('id') movieId: number, @Body() updateData: UpdateMovieDto) {
     return this.moviesService.update(movieId, updateData);
   }

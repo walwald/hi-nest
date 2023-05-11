@@ -1,16 +1,19 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class Movie {
+export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  title: string;
+  firstName: string;
 
   @Column()
-  year: number;
+  lastName: string;
 
-  @Column('simple-array')
-  genres: string[];
+  @Column()
+  email: string;
+
+  @Column({ default: true })
+  isActive: boolean;
 }
